@@ -1,0 +1,8 @@
+target/
+*.iml
+.idea/
+.git/
+.dat
+lib/
+out/
+atlassian-ide-plugin.xml
