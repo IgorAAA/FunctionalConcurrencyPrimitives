@@ -14,11 +14,11 @@ final case class AsyncE[F[_], A](m: MVar[F, Either[Throwable, A]])
 object AsyncE {
   def async[F[_]: ConcurrentEffect: ContextShift, A](
     action: F[A]
-  )(implicit AE: ApplicativeError[F, Throwable]): F[AsyncE[F, A]] =
+  ): F[AsyncE[F, A]] =
     for {
       m <- MVar.empty[F, Either[Throwable, A]]
       _ <- (for {
-        a <- AE.attempt(action)
+        a <- ApplicativeError[F, Throwable].attempt(action)
         _ <- m.put(a)
       } yield ()).start
     } yield AsyncE(m)
